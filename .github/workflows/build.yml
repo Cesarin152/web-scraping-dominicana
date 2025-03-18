@@ -1,0 +1,27 @@
+name: Build EXE for Windows
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v2
+
+      - name: Instalar Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt  # Instala todas las dependencias
+
+      - name: Crear el ejecutable
+        run: pyinstaller --onefile main.py
+
+      - name: Subir el ejecutable
+        uses: actions/upload-artifact@v2
+        with:
+          name: executable
+          path: dist/main.exe
