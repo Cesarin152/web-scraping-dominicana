@@ -6,7 +6,7 @@ from DatasSelectionService import DataSelectionService
 from datetime import datetime
 import time
 import sys
-
+import os
 END_DATE = datetime(2025, 5,1)
 XPATHS={
     'ButtonCentralMarginal':'//*[@id="dnn_ctr953_ModuleContent"]/div/ul/li[2]',
@@ -26,7 +26,7 @@ def check_date_validate():
 def init_workflow():
     # Verificar la fecha antes de ejecutar el script
     check_date_validate()
-
+    
     browser = 'chrome'
     web = WebDriverManager(browser=browser, headless=False)
     web_driver = web.init_driver()
@@ -34,25 +34,27 @@ def init_workflow():
     print('Cargando Pagina web....')
     web_driver.get('https://www.oc.do/Servicios/Reporte/CostosMarginales')
     wait = WebDriverWait(web_driver, 30)
-    
+    time.sleep(0.5)
 
 
     # Hacer clic en el botón Central Marginal
     print('Click en el boton Central Marginal')
     ButtonCentralMarginal = wait.until(EC.element_to_be_clickable((By.XPATH, XPATHS.get('ButtonCentralMarginal'))))
     ButtonCentralMarginal.click()
-    
+    time.sleep(0.5)
 
     
     # Hacer clic en el checkbox "Ponderada"
     print('Haciendo Click en Ponderada')
     CheckBox = wait.until(EC.element_to_be_clickable((By.XPATH, XPATHS.get('CheckBox'))))
     CheckBox.click()
+    time.sleep(0.5)
 
     # Hacer clic en el botón de ayer
     print('Haciendo Click en Ayer')
     Button_yesterday=wait.until(EC.element_to_be_clickable((By.XPATH, XPATHS.get('Button_yesterday'))))
     Button_yesterday.click()
+    time.sleep(0.5)
 
     now = datetime.now()
     DataSelect = DataSelectionService(None, None, None, 10, int(now.day)-1, now.month, now.year, typology_key='Dominicana')
@@ -61,6 +63,10 @@ def init_workflow():
     DataSelect._extract_table(
         wait, '', XPATHS.get('Table')
     )
+
+    print('Cerrando Navegador')
+    time.sleep(2)
+    os._exit(0)
 
 
 init_workflow()
