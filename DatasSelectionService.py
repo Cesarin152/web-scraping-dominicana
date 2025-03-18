@@ -230,8 +230,8 @@ class DataSelectionService:
 
         # Guardar en CSV
         df = pd.DataFrame(data, columns=headers if headers else None)
-        file_name = f"Data_{self.typology_key}_{self.day}_{self.month}_{self.year}.xlsx"
-        df.to_excel(file_name, index=False)
+        file_name = f"Data_{self.typology_key}_{self.day}_{self.month}_{self.year}.csv"
+        df.to_csv(file_name, index=False)
         logging.info(f"Tabla extraída y guardada en: {file_name}")
 
     def checked_click(self, element):
